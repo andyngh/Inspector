@@ -10,7 +10,7 @@ Current update: Aug. 25, 2024
 
 # Fork Note
 
-This forked repository contains the modified `Inspector.py` script (outputting CSI instead of BAI index) so that it can be used for large contigs exceeding the limit of the BAI index. 
+This forked repository contains the modified `inspector.py` script (outputting CSI instead of BAI index) so that it can be used for large contigs exceeding the limit of the BAI index. 
 
 ## Quick Start
 ```sh
