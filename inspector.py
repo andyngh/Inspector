@@ -98,7 +98,9 @@ if not denovo_args.skip_read_mapping:
 		os.system("rm "+str(denovo_args.outpath)+"read_to_contig_*.bam")
 	else:
 		os.system("mv "+denovo_args.outpath+"read_to_contig_1.bam "+denovo_args.outpath+"read_to_contig.bam")
-	os.system("samtools index "+str(denovo_args.outpath)+"read_to_contig.bam")
+	#os.system("samtools index "+str(denovo_args.outpath)+"read_to_contig.bam")
+    # Use the CSI index for large contigs
+    os.system("samtools index -c -@ " + str(denovo_args.thread) + " " + str(denovo_args.outpath) + "read_to_contig.bam")
 t2=time.time()
 logf=open(denovo_args.outpath+'Inspector.log','a')
 logf.write('TIME: Read Alignment: '+str(t2-t1)+'\n')
@@ -197,7 +199,9 @@ logf.close()
 if denovo_args.ref:
 	mapinfo=os.system("minimap2 -a -I 10G --eqx -x asm5 -t " + str(denovo_args.thread//2) + " "+denovo_args.ref+" " + denovo_args.outpath + "valid_contig.fa  --secondary=no > "+ denovo_args.outpath+"contig_to_ref.sam")
 	os.system("samtools sort -@ " + str(denovo_args.thread//2) + " "+ denovo_args.outpath+"contig_to_ref.sam -o  " + denovo_args.outpath+"contig_to_ref.bam")
-	os.system("samtools index "+ denovo_args.outpath+"contig_to_ref.bam")
+	#os.system("samtools index "+ denovo_args.outpath+"contig_to_ref.bam")
+	# Use CSI index for large contigs
+	os.system("samtools index -c -@ " + str(denovo_args.thread) + " " + denovo_args.outpath+"contig_to_ref.bam")
 	chromosomes=denovo_static.get_ref_align_info(denovo_args.outpath,totalcontiglen)
 	mapping_info=debreak_detect.detect_sam_ref("contig_to_ref.sam",denovo_args.outpath,denovo_args.outpath,denovo_args.min_assembly_error_size,denovo_args.max_assembly_error_size)
 	
